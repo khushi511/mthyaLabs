@@ -27,6 +27,7 @@ connection.connect(function(err){
 app.get('/', function(req, res){
 	res.render('login');
 })
+//Api to fetch user activity details 
 app.get('/recommendation?*', function(req, res){
 	var data;
 	console.log("req query", req.query);
@@ -37,24 +38,26 @@ app.get('/recommendation?*', function(req, res){
 					}
 					else{
 						data=rows;
-						console.log("succesfull query rows at home", data);
+						console.log("succesfull fetched user activity details");
 						res.json(data);
 
 					}
 				})
 })
+//hone page
 app.post('/home', function(req, res){
+	//search if user exits
 	connection.query("SELECT * FROM user where email = '"+req.body.email+"'", function(error, rows, fields){
 		if(!!error){
 			console.log("error in the query");
 		}
 		else{
 			if(rows.length > 0){
-				console.log("succesfull query rows at login page");
+				console.log("User found in databse, then redirecting to home page");
 				res.render('home');
 			}
 			else{
-				console.log("No such email Id");
+				console.log("User doesnot exit");
 				res.send("No such email id");
 			}
 		}
