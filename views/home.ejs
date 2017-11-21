@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form action="/login">
+<form >
 	<h2>Home Page</h2>
 </form> 
 
@@ -18,7 +18,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
     var storedValue = localStorage.getItem("email");	
-	console.log("storedValue", storedValue);
 	var hotelList = [{place:'pune',
 						hotels: [{name: "hotelPune 200", price: 200},
 								{name: "hotelPune 700", price: 700},
@@ -54,10 +53,6 @@ $(document).ready(function(){
 					//for booked Customers
 					else if(data[0].activityTypeId == 3 && hotel.price >= parseInt(data[0].price)){
 						var li ='<li>Hotel Name:'+hotel.name+'Price: '+hotel.price+'</li>';
-						$(li).appendTo($('#hotel'));
-					}
-					else {
-						var li ='<p>No Hotels Available</p>';
 						$(li).appendTo($('#hotel'));
 					}
 				})
