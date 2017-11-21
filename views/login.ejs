@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="loginForm" action="/home" method='POST'>
+	<h2>Login Page</h2>
+  Email:<br>
+  <input type="text" id="email" name="email">
+  <br>
+  <input type="submit" id="loginBtn" value="Submit">
+</form> 
+
+<p>Please insert your email id to login</p>
+
+</body>
+<script type="text/javascript">
+$('#loginForm').submit(function(){
+		var input = document.getElementById("email");
+		localStorage.setItem("email", input.value);
+		return true;
+})
+
+</script>
+</html>
