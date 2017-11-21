@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form action="/login">
+	<h2>Home Page</h2>
+</form> 
+
+<p>This is home page</p>
+<ul id="hotel">
+<h3>hotel list</h3>
+</ul>
+
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+    var storedValue = localStorage.getItem("email");	
+	console.log("storedValue", storedValue);
+	var hotelList = [{place:'pune',
+						hotels: [{name: "hotelPune 200", price: 200},
+								{name: "hotelPune 700", price: 700},
+								{name: "hotelPune 500", price: 500},
+								{name: "hotelPune2 200", price: 200},
+								{name: "hotelPune2 800", price: 800}]
+					},
+					{place:'delhi',
+						hotels: [{name: "hotelDelhi 200", price: 200},
+								{name: "hotelDelhi 700", price: 700},
+								{name: "hotelDelhi 500", price: 500},
+								{name: "hotelDelhi2 200", price: 200},
+								{name: "hotelDelhi2 800", price: 800}]
+					}];
+	
+	var url = window.location.origin +"/recommendation?email="+storedValue;
+	fetch(url)
+		.then((resp) => resp.json())
+		.then(function(data) {
+		console.log("hotelList", hotelList);
+			hotelList.map((item)=>{
+				item.hotels.map((hotel) =>{
+					//for visited customers
+					if(item.place == data[0].place && data[0].activityTypeId == 1 && hotel.price == parseInt(data[0].price)){
+						var li ='<li>Hotel Name:'+hotel.name+'Price: '+hotel.price+'</li>';
+						$(li).appendTo($('#hotel'));
+					}
+					//for non-booked customers
+					else if(item.place == data[0].place && data[0].activityTypeId == 2 && hotel.price <= parseInt(data[0].price)){
+						var li ='<li>Hotel Name:'+hotel.name+'Price: '+hotel.price+'</li>';
+						$(li).appendTo($('#hotel'));
+					}
+					//for booked Customers
+					else if(data[0].activityTypeId == 3 && hotel.price >= parseInt(data[0].price)){
+						var li ='<li>Hotel Name:'+hotel.name+'Price: '+hotel.price+'</li>';
+						$(li).appendTo($('#hotel'));
+					}
+					else {
+						var li ='<p>No Hotels Available</p>';
+						$(li).appendTo($('#hotel'));
+					}
+				})
+			})
+		})
+		.catch(function(error) {
+			console.log(JSON.stringify(error));
+		});   
+
+});
+
+</script>
+</html>
